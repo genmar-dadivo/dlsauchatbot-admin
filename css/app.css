@@ -1,0 +1,10 @@
+.custom-collapse-item {
+    color: white !important;
+}
+.custom-collapse-item :hover {
+    color: black !important;
+    background-color: red;
+}
+.pointer {
+    cursor: pointer;
+}
