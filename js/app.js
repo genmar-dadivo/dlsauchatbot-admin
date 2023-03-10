@@ -131,13 +131,14 @@ $(document).ready(function() {
             url: 'http://127.0.0.1:8000/api/login',
             data: formData,
             success: function(data) {
-                alert(data);
+                console.log(data);
                 Cookies.set('token', data.token, {expires: 1});
                 Cookies.set('udata', formData, {expires: 1});
                 location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                alert(textStatus + " - " + errorThrown);
+                console.log(textStatus + " - " + errorThrown);
+                alert('Invalid Login');
             }
         });
     });
