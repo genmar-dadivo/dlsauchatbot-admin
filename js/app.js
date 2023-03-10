@@ -152,10 +152,12 @@ $(document).ready(function() {
             data: formData,
             success: function(data) {
                 console.log(data);
-                // location.reload();
+                alert('Question inserted');
+                location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus + " - " + errorThrown);
+                alert('Error Occured');
             }
         });
     });
