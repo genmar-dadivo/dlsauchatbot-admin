@@ -4,7 +4,7 @@ $(document).ready(function() {
     if (app) { 
         if (app == '2') {
             Cookies.set('app', '2', {expires: 1});
-            $('#app').load('../welcome.php');
+            $('#app').load('welcome.php');
             $.ajax({
                 type: "GET",
                 url: 'http://127.0.0.1:8000/api/talk/welcome',
@@ -32,7 +32,7 @@ $(document).ready(function() {
             });
         }
         else if (app == '3') {
-            $('#app').load('../greeting.php');
+            $('#app').load('greeting.php');
             $.ajax({
                 type: "GET",
                 url: 'http://127.0.0.1:8000/api/talk/greeting',
@@ -131,13 +131,13 @@ $(document).ready(function() {
             url: 'http://127.0.0.1:8000/api/login',
             data: formData,
             success: function(data) {
-                console.log(data);
+                alert(data);
                 Cookies.set('token', data.token, {expires: 1});
                 Cookies.set('udata', formData, {expires: 1});
                 location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus + " - " + errorThrown);
+                alert(textStatus + " - " + errorThrown);
             }
         });
     });
