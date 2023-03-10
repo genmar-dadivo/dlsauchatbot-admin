@@ -101,7 +101,7 @@ $(document).ready(function() {
         success: function(data) {
             $('.question-group').append('<a class="collapse-item pointer add-department custom-collapse-item" data-toggle="modal" data-target="#mdlDepartment">Add Department</a>');
             $.each(data, function(index, value) {
-                $('.question-group').append('<a class="collapse-item group-departments pointer custom-collapse-item" data-group="' + value + '" data-endpoint="http://127.0.0.1:8000/api/group/delete/' + value + '">' + value + '</a>');
+                $('.question-group').append('<a class="collapse-item group-departments pointer custom-collapse-item" data-group="' + value.name + '" data-endpoint="http://127.0.0.1:8000/api/group/delete/' + value.name + '" data-id="' + value.id + '">' + value.name + '</a>');
             });
         }
     });
@@ -161,51 +161,66 @@ $(document).ready(function() {
             }
         });
     });
-
     $('#accordionSidebar').on("click", ".group-departments", function(event) {
         const ep = $(this).attr('data-endpoint');
         const c = $(this).attr('data-group');
-        $('#app').load('../group.php');
+        const id = $(this).attr('data-id');
         Cookies.set('app', '4', {expires: 1});
         Cookies.set('group', c, {expires: 1});
 
-        $.ajax({
-            type: "GET",
-            url: 'http://127.0.0.1:8000/api/group/' + c,
-            success: function(data) {
-                var html = "";
-                $.each(data, function(index, item) {
-                    $('#questions').append("<tr><td>" + item.id + "</td><td>" + item.group_id + "</td><td>" + item.course + "</td><td>" + item.question + "</td><td><a style='color: inherit' target='_blank' href='http://127.0.0.1:8000/api/question/delete/" + item.id + "'><i class='fa fa-trash pointer'></i></a><i class='fa fa-edit pointer edits' data-toggle='modal' data-target='#mdlEditQuestion'></i></td></tr>");
-                    $('.edits-' + item.id).on("click", function(event) {
-                        $.ajax({
-                            type: "GET",
-                            url: 'http://127.0.0.1:8000/api/question/' + item.id,
-                            success: function(data) {
-                                $('#editQuestion').val(data.question);
-                                $('#editCourse').val(data.course);
-                                $('#id').val(data.id);
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.log(textStatus + " - " + errorThrown);
-                            }
-                        });
-                    });
-                });
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus + " - " + errorThrown);
-            }
-        });
+        
 
 
 
         if (event.ctrlKey) {
+            // $.ajax({
+            //     type: "POST",
+            //     url: ep,
+            //     success: function(data) {
+            //         console.log(data);
+            //         location.reload();
+            //     },
+            //     error: function(jqXHR, textStatus, errorThrown) {
+            //         console.log(textStatus + " - " + errorThrown);
+            //     }
+            // });
+
+            // let text;
+            // let person = prompt("Please enter your name:", c);
+            // if (person == null || person == "") {
+            //     text = "User cancelled the prompt.";
+            // } else {
+            //     text = "Hello " + person + "! How are you today?";
+            // }
+            // document.getElementById("demo").innerHTML = text;
+            $('#mdlGroup').modal('show');
+            $('#idg').val(id);
+            $('#aDepartment').val(c);
+        }
+        else {
+            $('#app').load('../group.php');
             $.ajax({
-                type: "POST",
-                url: ep,
+                type: "GET",
+                url: 'http://127.0.0.1:8000/api/group/' + c,
                 success: function(data) {
-                    console.log(data);
-                    location.reload();
+                    var html = "";
+                    $.each(data, function(index, item) {
+                        $('#questions').append("<tr><td>" + item.id + "</td><td>" + item.group_id + "</td><td>" + item.course + "</td><td>" + item.question + "</td><td><a style='color: inherit' target='_blank' href='http://127.0.0.1:8000/api/question/delete/" + item.id + "'><i class='fa fa-trash pointer'></i></a><i class='fa fa-edit pointer edits' data-toggle='modal' data-target='#mdlEditQuestion'></i></td></tr>");
+                        $('.edits-' + item.id).on("click", function(event) {
+                            $.ajax({
+                                type: "GET",
+                                url: 'http://127.0.0.1:8000/api/question/' + item.id,
+                                success: function(data) {
+                                    $('#editQuestion').val(data.question);
+                                    $('#editCourse').val(data.course);
+                                    $('#id').val(data.id);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    console.log(textStatus + " - " + errorThrown);
+                                }
+                            });
+                        });
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus + " - " + errorThrown);
@@ -344,6 +359,46 @@ $(document).ready(function() {
             }
         });
     });
-
+    
+    $("#formADepartment").on('submit', function(e) {
+        var action = $('#action').val();
+        e.preventDefault();
+        if (action == 2) {
+            var formData = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url: 'http://127.0.0.1:8000/api/group/update',
+                data: formData,
+                success: function(data) {
+                    alert('Data Updated');
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + " - " + errorThrown);
+                    alert('Error Occured');
+                }
+            });
+        }
+        else if (action == 1) {
+            var aDepartment = $('#aDepartment').val();
+            $.ajax({
+                type: "GET",
+                url: 'http://127.0.0.1:8000/api/group/delete/' +  aDepartment,
+                success: function(data) {
+                    alert('Data deleted');
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + " - " + errorThrown);
+                    alert('Error Occured' + 'http://127.0.0.1:8000/api/group/delete/' +  aDepartment);
+                }
+            });
+        }
+        else {
+            alert('Invalid Action');
+        }
+    });
     
 });

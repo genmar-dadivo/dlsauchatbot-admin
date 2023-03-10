@@ -281,6 +281,46 @@ if (!$_COOKIE["token"]) { header('Location: login.php'); }
         </div>
     </div>
 
+    <div class="modal fade" id="mdlGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Department</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form id="formADepartment">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Department" class="form-label">Action</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="action">Options</label>
+                                </div>
+                                <select class="custom-select" name="action" id="action" required>
+                                    <option selected value="">Choose...</option>
+                                    <option value="1">Delete</option>
+                                    <option value="2">Update</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Department" class="form-label">Department</label>
+                            <input type="text" class="form-control" name="name" id="aDepartment" required autocomplete="off">
+                            <input type="hidden" class="form-control" name="id" id="idg" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
